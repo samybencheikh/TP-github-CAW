@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EXO3</title>
+</head>
+<body>
+
+<div id="EXO3"></div>
+
+<script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
+
+<script type="text/babel">
+  // UserList component
+  const UserList = ({ users, onDelete }) => (
+    <ul>
+      {users.map((user, index) => (
+        <li key={index}>
+          {user}
+          <button onClick={() => onDelete(index)}>Delete</button>
+        </li>
+      ))}
+    </ul>
+  );
+
+  // AuthForm component
+  class AuthForm extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {
+        username: '',
+        password: '',
+        users: [],
+      };
+    }
+
+    handleChange = (event) => {
+      const { name, value } = event.target;
+      this.setState({ [name]: value });
+    };
+
+    handleSubmit = (event) => {
+      event.preventDefault();
+      const { username, password, users } = this.state;
+
+      if (username && password) {
+        const newUserList = [...users, `${username} - ${password}`];
+        this.setState({
+          users: newUserList,
+          username: '',
+          password: '',
+        });
+      }
+    };
+
+    handleDelete = (index) => {
+      const newUserList = [...this.state.users];
+      newUserList.splice(index, 1);
+      this.setState({ users: newUserList });
+    };
+
+    render() {
+      const { username, password, users } = this.state;
+
+      return (
+        <div>
+          <form onSubmit={this.handleSubmit}>
+            <label>
+              Username:
+              <input type="text" name="username" value={username} onChange={this.handleChange} />
+            </label>
+            <br />
+            <label>
+              Password:
+              <input type="password" name="password" value={password} onChange={this.handleChange} />
+            </label>
+            <br />
+            <button type="submit">Submit</button>
+          </form>
+          <UserList users={users} onDelete={this.handleDelete} />
+        </div>
+      );
+    }
+  }
+
+  // Render the AuthForm component
+  ReactDOM.render(<AuthForm />, document.getElementById('EXO3'));
+</script>
+
+</body>
+</html>

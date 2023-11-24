@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EXO1</title>
+</head>
+<body>
+
+<div id="click-me-root"></div>
+<div id="toggle-click-me-root"></div>
+<div id="app-root"></div>
+<script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
+
+<script type="text/babel">
+  // Your ClickMeButton class component
+  class ClickMeButton extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {
+        clicked: false
+      };
+    }
+
+    handleClick = () => {
+      this.setState({ clicked: true });
+    };
+
+    render() {
+      return (
+        <div>
+          <button onClick={this.handleClick}>ClickMe</button>
+          {this.state.clicked && <p>Clicked</p>}
+        </div>
+      );
+    }
+  }
+
+  // Your ClickMeButton function component
+  const ClickMeButtonFunction = () => {
+    const [clicked, setClicked] = React.useState(false);
+
+    const handleClick = () => {
+      setClicked(true);
+    };
+
+    return (
+      <div>
+        <button onClick={handleClick}>ClickMe</button>
+        {clicked && <p>Clicked</p>}
+      </div>
+    );
+  };
+
+  // Render the class component
+  ReactDOM.render(<ClickMeButton />, document.getElementById('click-me-root'));
+
+  // Render the function component
+  ReactDOM.render(<ClickMeButtonFunction />, document.getElementById('click-me-root'));
+</script>
+
+<script type="text/babel">
+  // Your ToggleButtonClickMe class component
+  class ToggleButtonClickMe extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {
+        clicked: false
+      };
+    }
+
+    handleClick = () => {
+      this.setState((prevState) => ({
+        clicked: !prevState.clicked
+      }));
+    };
+
+    render() {
+      return (
+        <div>
+          <button onClick={this.handleClick}>Toggle Me</button>
+          <p>{this.state.clicked ? 'Clicked' : 'Not Clicked'}</p>
+        </div>
+      );
+    }
+  }
+
+  // Your ToggleButtonClickMe function component
+  const ToggleButtonClickMeFunction = () => {
+    const [clicked, setClicked] = React.useState(false);
+
+    const handleClick = () => {
+      setClicked((prevClicked) => !prevClicked);
+    };
+
+    return (
+      <div>
+        <button onClick={handleClick}>Toggle Me</button>
+        <p>{clicked ? 'Clicked' : 'Not Clicked'}</p>
+      </div>
+    );
+  };
+
+  // Render the class component
+  ReactDOM.render(<ToggleButtonClickMe />, document.getElementById('toggle-click-me-root'));
+
+  // Render the function component
+  ReactDOM.render(<ToggleButtonClickMeFunction />, document.getElementById('toggle-click-me-root'));
+
+  // Main App component
+  class App extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {
+        buttonClicks: [0, 0, 0],
+        counter: 0
+      };
+    }
+
+    handleButtonClick = (buttonIndex) => {
+      this.setState((prevState) => {
+        const newButtonClicks = [...prevState.buttonClicks];
+        newButtonClicks[buttonIndex]++;
+        return { buttonClicks: newButtonClicks };
+      });
+    };
+
+    handleIncrement = () => {
+      this.setState((prevState) => ({
+        counter: prevState.counter + 1
+      }));
+    };
+
+    handleDecrement = () => {
+      this.setState((prevState) => ({
+        counter: prevState.counter - 1
+      }));
+    };
+
+    render() {
+      return (
+        <div>
+          <button onClick={() => this.handleButtonClick(0)}>Button1</button>
+          <button onClick={() => this.handleButtonClick(1)}>Button2</button>
+          <button onClick={() => this.handleButtonClick(2)}>Button3</button>
+          <p>{this.state.buttonClicks.map((clicks, index) => `Button #${index + 1} was clicked ${clicks} times. `)}</p>
+          <h1>Counter: {this.state.counter}</h1>
+          <button onClick={this.handleIncrement}>Inc</button>
+          <button onClick={this.handleDecrement}>Dec</button>
+        </div>
+      );
+    }
+  }
+
+  // Render the main App component
+  ReactDOM.render(<App />, document.getElementById('app-root'));
+  
+</script>
+
+</body>
+</html>

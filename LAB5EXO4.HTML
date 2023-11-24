@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EXO4
+    
+  </title>
+</head>
+<body>
+
+<div id="ajouter_div"></div>
+
+<script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
+
+<script type="text/babel">
+  // DynamicDivDisplay component
+  class DynamicDivDisplay extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {
+        divs: [],
+        currentDiv: {
+          height: '',
+          width: '',
+          backgroundColor: '',
+        },
+      };
+    }
+
+    handleChange = (event) => {
+      const { name, value } = event.target;
+      this.setState((prevState) => ({
+        currentDiv: {
+          ...prevState.currentDiv,
+          [name]: value,
+        },
+      }));
+    };
+
+    handleSubmit = (event) => {
+      event.preventDefault();
+      this.setState((prevState) => ({
+        divs: [...prevState.divs, { ...prevState.currentDiv }],
+        currentDiv: {
+          height: '',
+          width: '',
+          backgroundColor: '',
+        },
+      }));
+    };
+
+    render() {
+      const { divs, currentDiv } = this.state;
+
+      return (
+        <div>
+          <form onSubmit={this.handleSubmit}>
+            <label>
+              Height:
+              <input
+                type="text"
+                name="height"
+                value={currentDiv.height}
+                onChange={this.handleChange}
+              />
+            </label>
+            <br />
+            <label>
+              Width:
+              <input
+                type="text"
+                name="width"
+                value={currentDiv.width}
+                onChange={this.handleChange}
+              />
+            </label>
+            <br />
+            <label>
+              Background Color:
+              <input
+                type="text"
+                name="backgroundColor"
+                value={currentDiv.backgroundColor}
+                onChange={this.handleChange}
+              />
+            </label>
+            <br />
+            <button type="submit">Add Div</button>
+          </form>
+          <div style={{ marginTop: '20px' }}>
+            {divs.map((div, index) => (
+              <div
+                key={index}
+                style={{
+                  height: div.height,
+                  width: div.width,
+                  backgroundColor: div.backgroundColor,
+                  margin: '10px',
+                  padding: '10px',
+                }}
+              >
+                Div {index + 1}
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+  }
+
+  // Render the DynamicDivDisplay component
+  ReactDOM.render(<DynamicDivDisplay />, document.getElementById('ajouter_div'));
+</script>
+
+</body>
+</html>

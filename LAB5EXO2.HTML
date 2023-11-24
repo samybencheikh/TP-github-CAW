@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EXO2</title>
+</head>
+<body>
+
+<div id="app-root"></div>
+
+<script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
+
+<script type="text/babel">
+  // DisplayTab component
+  class DisplayTab extends React.Component {
+    renderList = () => {
+      return this.props.tab.map((element, index) => (
+        <li key={index}>
+          {this.props.displayType === 1 ? element : `Element ${index + 1} is: ${element}`}
+          {this.props.clickable && (
+            <span
+              style={{ cursor: 'pointer', marginLeft: '10px', color: 'red' }}
+              onClick={() => this.props.onElementClick(index)}
+            >
+              [Remove]
+            </span>
+          )}
+        </li>
+      ));
+    };
+
+    render() {
+      return <ul>{this.renderList()}</ul>;
+    }
+  }
+
+  // App component
+  class App extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {
+        table1: ["hello", "world", "from", "react"],
+        table2: ["apple", "banana", "orange"],
+      };
+    }
+
+    handleElementClick = (tableIndex, elementIndex) => {
+      this.setState((prevState) => {
+        const newTable = [...prevState[`table${tableIndex + 1}`]];
+        newTable.splice(elementIndex, 1);
+        return { [`table${tableIndex + 1}`]: newTable };
+      });
+    };
+
+    render() {
+      return (
+        <div>
+          <DisplayTab tab={this.state.table1} displayType={1} clickable onElementClick={(index) => this.handleElementClick(1, index)} />
+          <DisplayTab tab={this.state.table2} displayType={2} clickable onElementClick={(index) => this.handleElementClick(2, index)} />
+        </div>
+      );
+    }
+  }
+
+  // Render the App component
+  ReactDOM.render(<App />, document.getElementById('app-root'));
+</script>
+
+</body>
+</html>
